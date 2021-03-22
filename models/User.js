@@ -21,7 +21,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 3,
-    select: false,
   },
   date: {
     type: Date,

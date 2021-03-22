@@ -16,11 +16,16 @@ connectDB();
 // route files
 const index = require('./routes/index');
 const users = require('./routes/users');
+const messages = require('./routes/messages');
 
 // create app variable
 const app = express();
 
-//
+//socket io
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+// passport
 require('./config/passport')(passport);
 
 // ejs
@@ -30,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Body parser
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // express session
 app.use(
@@ -58,9 +64,14 @@ app.use((req, res, next) => {
 // mount routers
 app.use('/', index);
 app.use('/users', users);
+app.use('/messages', messages);
+
+// io.on('connection', () => {
+//   console.log('a user connected');
+// });
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);
 });

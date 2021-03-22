@@ -3,5 +3,5 @@ exports.welcome = (req, res) => {
 };
 
 exports.dashboard = (req, res) => {
-  res.render('dashboard', { name: req.user.name });
+  res.render('dashboard', { user: req.user });
 };
