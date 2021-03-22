@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const asyncHandler = require('../middleware/async');
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 exports.login = (req, res) => {
   res.render('login');
@@ -9,7 +11,17 @@ exports.register = (req, res) => {
   res.render('register');
 };
 
+exports.logging = (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/users/login',
+    failureFlash: true,
+  })(req, res, next);
+};
+
 exports.createUser = asyncHandler(async (req, res, next) => {
+  let errors = [];
+
   const { name, email, password, password2 } = req.body;
 
   // check required fields
@@ -36,7 +48,30 @@ exports.createUser = asyncHandler(async (req, res, next) => {
       password2,
     });
   } else {
-    const user = await User.create(req.body);
-    res.send('pass');
+    // validation passed
+    const existingUser = await User.findOne({ email: email });
+
+    if (existingUser) {
+      // user exists
+      errors.push({ msg: 'Email is already registered' });
+      res.render('register', {
+        errors,
+        name,
+        email,
+        password,
+        password2,
+      });
+    } else {
+      try {
+        const newUser = await User.create({ name, email, password });
+        req.flash(
+          'success_msg',
+          'You are now registered and can log in'
+        );
+        res.redirect('/users/login');
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 });
