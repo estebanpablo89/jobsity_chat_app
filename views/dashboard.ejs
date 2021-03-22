@@ -35,7 +35,7 @@
     socket.on('message', addMessages)
 
     function addMessages(message){
-        $("#messages").append(`<h4> ${message.user} </h4> <p> ${message.message} </p>`)
+        $("#messages").prepend(`<h4> ${message.user} </h4> <p> ${message.message} </p>`)
     }
 
     function getMessages(){
