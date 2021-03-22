@@ -4,6 +4,7 @@ const {
   register,
   createUser,
   logging,
+  logout,
 } = require('../controllers/users');
 
 const router = express.Router();
@@ -13,5 +14,8 @@ router.route('/login').get(login).post(logging);
 
 // register page
 router.route('/register').get(register).post(createUser);
+
+// logout
+router.route('/get').get(logout);
 
 module.exports = router;
