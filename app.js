@@ -24,6 +24,7 @@ const app = express();
 //socket io
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+global.io = io;
 
 // passport
 require('./config/passport')(passport);

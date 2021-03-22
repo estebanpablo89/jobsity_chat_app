@@ -13,7 +13,7 @@ exports.createMessage = (req, res) => {
       console.log(err);
     }
 
-    //io.emit('message', req.body);
+    global.io.emit('message', req.body);
     res.sendStatus(200);
   });
 };
