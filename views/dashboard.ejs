@@ -10,7 +10,7 @@
 <div class="container">
     <br>
     <div class="jumbotron">
-        <h1 class="display-4">Send Message</h1>
+        <h1 >Send Message</h1>
         <br>
         <input id = "user" class="form-control" value="<%= user.name %>" disabled>
         <br>
@@ -35,12 +35,13 @@
     socket.on('message', addMessages)
 
     function addMessages(message){
-        $("#messages").prepend(`<h4> ${message.user} </h4> <p> ${message.message} </p>`)
+      const messageDate = new Date();
+
+        $("#messages").prepend(`<h4> ${message.user} </h4><p> ${message.message} </p>`)
     }
 
     function getMessages(){
       $.get('http://localhost:5000/messages', (data) => {
-        console.log(data);
         data.forEach(addMessages);
       })
     }
