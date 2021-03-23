@@ -24,9 +24,13 @@
 </div>
 <script>
    var socket = io();
+   const queryString = window.location.search;
+   const urlParams = new URLSearchParams(queryString);
+   const room = urlParams.get('room');
+
     $(() => {
         $("#send").click(()=>{
-            sendMessage({user: $("#user").val(), message: $("#message").val()});
+            sendMessage({user: $("#user").val(), message: $("#message").val(), room: room});
         })
 
         getMessages()
@@ -41,7 +45,7 @@
     }
 
     function getMessages(){
-      $.get('http://localhost:5000/messages', (data) => {
+      $.get(`http://localhost:5000/messages?room=${room}`, (data) => {
         data.forEach(addMessages);
       })
     }

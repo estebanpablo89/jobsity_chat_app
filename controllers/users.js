@@ -12,8 +12,12 @@ exports.register = (req, res) => {
 };
 
 exports.logging = (req, res, next) => {
+  global.io.on('connection', socket => {
+    socket.join(req.body.room);
+  });
+
   passport.authenticate('local', {
-    successRedirect: '/dashboard',
+    successRedirect: `/dashboard?room=${req.body.room}`,
     failureRedirect: '/users/login',
     failureFlash: true,
   })(req, res, next);
