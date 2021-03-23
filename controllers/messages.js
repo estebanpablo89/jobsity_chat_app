@@ -1,5 +1,6 @@
 const Message = require('../models/Message');
 const createBotTask = require('../chat_bot/bot');
+const workBotTask = require('../chat_bot/worker');
 
 exports.getMessages = (req, res) => {
   Message.find({}, (err, messages) => {
@@ -10,12 +11,16 @@ exports.getMessages = (req, res) => {
 };
 
 exports.createMessage = (req, res) => {
-  var message = new Message(req.body);
+  const message = new Message(req.body);
   if (message.message.startsWith('/stock=')) {
-    console.log(message.message.split('=')[1]);
-    createBotTask(message.message.split('=')[1], () => {
-      console.log('test');
-    });
+    createBotTask(message.message.split('=')[1]).then(
+      workBotTask(botResponse => {
+        global.io.emit('message', {
+          user: 'chat_bot',
+          message: botResponse,
+        });
+      })
+    );
   } else {
     message.save(err => {
       if (err) {
