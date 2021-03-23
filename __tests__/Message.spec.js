@@ -23,4 +23,23 @@ describe('Message', () => {
     expect(response.body.success).toBe(true);
     await deleteMessage(response.body.data._id);
   });
+
+  it('returns message data when a message is created', async () => {
+    const response = await postMessage();
+    expect(response.status).toBe(201);
+    expect(response.body.data.user).toBeDefined();
+    expect(response.body.data.message).toBeDefined();
+    expect(response.body.data.room).toBeDefined();
+    await deleteMessage(response.body.data._id);
+  });
+
+  it('returns 200 OK with data when message is searched and found', async () => {
+    const response1 = await postMessage();
+    const response2 = await request(server).get(
+      `/messages/${response1.body.data._id}`
+    );
+    expect(response2.status).toBe(200);
+    expect(response2.body.message).toBeDefined();
+    await deleteMessage(response2.body._id);
+  });
 });

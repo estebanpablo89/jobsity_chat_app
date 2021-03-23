@@ -2,7 +2,7 @@ const express = require('express');
 
 const {
   getMessages,
-  createMessage,
+  createSocketMessage,
   getMessage,
   deleteMessage,
   createSingleMessage,
@@ -11,7 +11,7 @@ const {
 const router = express.Router();
 
 // manage messages
-router.route('/').get(getMessages).post(createMessage);
+router.route('/').get(getMessages).post(createSocketMessage);
 
 router.route('/create').post(createSingleMessage);
 

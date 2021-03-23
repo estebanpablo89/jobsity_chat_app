@@ -40,7 +40,7 @@ exports.createSingleMessage = async (req, res) => {
   });
 };
 
-exports.createMessage = (req, res) => {
+exports.createSocketMessage = (req, res) => {
   const message = new Message(req.body);
   if (message.message.startsWith('/stock=')) {
     createBotTask(message.message.split('=')[1]).then(
