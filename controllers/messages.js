@@ -10,6 +10,36 @@ exports.getMessages = (req, res) => {
     .limit(50);
 };
 
+exports.deleteMessage = async (req, res) => {
+  const message = await Message.findById(req.params.id);
+  if (!message) {
+    res.status(400).json({
+      success: true,
+      error: 'Message not found',
+    });
+  } else {
+    await message.remove();
+    res.status(200).json({
+      success: true,
+      data: {},
+    });
+  }
+};
+
+exports.getMessage = (req, res) => {
+  Message.findOne({ id: req.query.id }, (err, message) => {
+    res.send(message);
+  });
+};
+
+exports.createSingleMessage = async (req, res) => {
+  const message = await Message.create(req.body);
+  res.status(201).json({
+    success: true,
+    data: message,
+  });
+};
+
 exports.createMessage = (req, res) => {
   const message = new Message(req.body);
   if (message.message.startsWith('/stock=')) {
@@ -26,9 +56,8 @@ exports.createMessage = (req, res) => {
       if (err) {
         console.log(err);
       }
-
       global.io.to(message.room).emit('message', req.body);
-      res.sendStatus(200);
+      res.status(200);
     });
   }
 };
