@@ -26,10 +26,20 @@ exports.deleteMessage = async (req, res) => {
   }
 };
 
-exports.getMessage = (req, res) => {
-  Message.findOne({ id: req.query.id }, (err, message) => {
-    res.send(message);
-  });
+exports.getMessage = async (req, res) => {
+  const message = await Message.findById(req.params.id);
+  if (!message) {
+    res.status(400).json({
+      success: true,
+      error: 'Message not found',
+    });
+  } else {
+    await message.remove();
+    res.status(200).json({
+      success: true,
+      data: message,
+    });
+  }
 };
 
 exports.createSingleMessage = async (req, res) => {

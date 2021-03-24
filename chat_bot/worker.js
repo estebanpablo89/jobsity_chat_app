@@ -16,9 +16,7 @@ const workBotTask = callback => {
           });
           ok = ok.then(function () {
             ch.consume('task_queue', doWork, { noAck: false });
-            console.log(
-              ' [*] Waiting for messages. To exit press CTRL+C'
-            );
+            console.log(' [*] Waiting for messages.');
           });
           return ok;
 

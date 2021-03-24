@@ -39,7 +39,15 @@ describe('Message', () => {
       `/messages/${response1.body.data._id}`
     );
     expect(response2.status).toBe(200);
-    expect(response2.body.message).toBeDefined();
-    await deleteMessage(response2.body._id);
+    expect(response2.body.data.message).toBeDefined();
+    await deleteMessage(response2.body.data._id);
+  });
+
+  it('returns 400 status with error when message is not found', async () => {
+    const response = await request(server).get(
+      '/messages/605a6d26b3275b25ecc07f42'
+    );
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBeDefined();
   });
 });
