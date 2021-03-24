@@ -28,6 +28,7 @@ Program will be running on localhost:5000
 - Express
 - Socket io for chat
 - Passport for auth
+- RabbitMQ for chat_bot
 
 ## Tests
 
