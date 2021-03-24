@@ -21,6 +21,14 @@ npm run dev
 
 Program will be running on localhost:5000
 
+### Used
+
+- Jest and supertest for tests
+- Mongodb to store users and messages
+- Express
+- Socket io for chat
+- Passport for auth
+
 ## Tests
 
 Run tests:
